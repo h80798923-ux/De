@@ -11,9 +11,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
-            grub-pc-bin grub-common \
-            xorriso wget tar
+          sudo apt install -y grub-pc-bin grub-common xorriso wget tar
 
       - name: Download Alpine netboot
         run: |
@@ -27,15 +25,15 @@ jobs:
       - name: Prepare ISO tree
         run: |
           mkdir -p iso/boot/grub
-          cp netboot/vmlinuz-lts iso/boot/vmlinuz
-          cp netboot/initramfs-lts iso/boot/initrd
+          cp netboot/boot/vmlinuz-lts iso/boot/vmlinuz
+          cp netboot/boot/initramfs-lts iso/boot/initrd
 
-      - name: GRUB menu
+      - name: Create GRUB menu
         run: |
           echo 'set timeout=5' > iso/boot/grub/grub.cfg
           echo 'set default=0' >> iso/boot/grub/grub.cfg
           echo 'menuentry "TrixieOS Live (ProjectA tarafından yapıldı)" {' >> iso/boot/grub/grub.cfg
-          echo '  linux /boot/vmlinuz alpine_dev=ramdisk quiet' >> iso/boot/grub/grub.cfg
+          echo '  linux /boot/vmlinuz alpine_dev=ramdisk quiet loglevel=0' >> iso/boot/grub/grub.cfg
           echo '  initrd /boot/initrd' >> iso/boot/grub/grub.cfg
           echo '}' >> iso/boot/grub/grub.cfg
 
